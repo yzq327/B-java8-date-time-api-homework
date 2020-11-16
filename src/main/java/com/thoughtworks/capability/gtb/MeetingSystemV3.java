@@ -1,6 +1,8 @@
 package com.thoughtworks.capability.gtb;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -26,7 +28,11 @@ public class MeetingSystemV3 {
     LocalDateTime meetingTime = LocalDateTime.parse(timeStr, formatter);
 
     LocalDateTime now = LocalDateTime.now();
-    if (now.isAfter(meetingTime)) {
+    ZoneId zoneId = ZoneId.of("Asia/Shanghai");
+    ZonedDateTime beijing = ZonedDateTime.of(now, zoneId);
+    ZonedDateTime chicago = beijing.withZoneSameInstant(ZoneId.of("America/Chicago"));
+    LocalDateTime chicagoTime = chicago.toLocalDateTime();
+    if (chicagoTime.isAfter(meetingTime)) {
       LocalDateTime tomorrow = now.plusDays(1);
       int newDayOfYear = tomorrow.getDayOfYear();
       meetingTime = meetingTime.withDayOfYear(newDayOfYear);
